@@ -153,6 +153,12 @@
   <br>
   <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20251116T000000Z%0ADTEND:20251116T235900Z%0ASUMMARY:Boda%20de%20Tobi%20y%20Lucila%0ADESCRIPTION:Nos%20casamos%21%0ALOCATION:A%20definir%0AEND:VEVENT%0AEND:VCALENDAR"
     download="boda-tobi-lucila.ics" class="boton-calendario">Guardar en el calendario 📅</a>
+  <br>
+  <button id="boton-musica" class="boton-calendario">⏸️ Pausar música</button>
+
+  <div style="display: none;">
+    <div id="player"></div>
+  </div>
 
   <script>
     const fechaBoda = new Date("2025-11-16T00:00:00");
@@ -174,13 +180,53 @@
     const intervalo = setInterval(actualizarContador, 1000);
     actualizarContador();
   </script>
+  <script>
+    let player;
+    let musicaPausada = false;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'dy9nwe9_xzw',
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'dy9nwe9_xzw',
+          controls: 0,
+          mute: 0
+        },
+        events: {
+          onReady: (event) => event.target.playVideo()
+        }
+      });
+    }
+
+    document.getElementById('boton-musica').addEventListener('click', function () {
+      if (!player) return;
+      if (musicaPausada) {
+        player.playVideo();
+        this.innerText = '⏸️ Pausar música';
+      } else {
+        player.pauseVideo();
+        this.innerText = '▶️ Reproducir música';
+      }
+      musicaPausada = !musicaPausada;
+    });
+
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  </script>
 
   <div style="display: none;">
     <iframe width="0" height="0"
-      src="https://www.youtube.com/embed/kPa7bsKwL-c?autoplay=1&loop=1&playlist=kPa7bsKwL-c&controls=0&mute=0"
+      src="https://www.youtube.com/embed/dy9nwe9_xzw?autoplay=1&loop=1&playlist=dy9nwe9_xzw&controls=0&mute=0"
       frameborder="0" allow="autoplay" allowfullscreen>
     </iframe>
   </div>
+
 
   <section style="margin-top: 50px; padding: 0 20px;">
     <h2 style="font-family: 'Great Vibes', sans-serif; color: #783D19; font-size: 2.0em;">Salón</h2>
@@ -223,6 +269,21 @@
         vos! 💕</p>
     </section>
   </section>
+  <section id="lista-regalos"
+    style="margin-top: 60px; padding: 20px; background-color: #fff8f1; border-radius: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">
+    <h2 style="text-align: center; font-family: 'Montserrat', sans-serif; color: #783D19;">🎁 Lista de Regalos</h2>
+    <ul style="font-family: 'Montserrat', sans-serif; color: #783D19; font-size: 1em; line-height: 1.6;">
+      <li>Cocina</li>
+      <li>Frazadas (2 plazas y media)</li>
+      <li>Sábanas (2 plazas y media)</li>
+      <li>Bandeja de horno</li>
+      <li>Sillas</li>
+      <li>Toallas y toallón</li>
+      <li>Fuentes</li>
+    </ul>
+    <p style="margin-top: 20px; color: #783D19;">También dejamos nuestro Alias:<br><strong>LucilayTobias.</strong></p>
+  </section>
+
 
   <footer style="margin-top: 40px; font-family: 'Montserrat', sans-serif; color: #783D19;">
     <p>© 2025 Tobi & Lucila. Todos los derechos reservados.</p>
